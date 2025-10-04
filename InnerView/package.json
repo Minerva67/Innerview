@@ -1,0 +1,19 @@
+{
+  "name": "heart-mirror",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev:mock": "MOCK_ANALYZE=true npx vercel dev",
+    "dev:local": "node dev-server.js",
+    "start": "npx vercel start"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.2",
+    "express": "^4.18.2",
+    "openai": "^4.20.0"
+  },
+  "devDependencies": {
+    "vercel": "^48.0.3"
+  }
+}

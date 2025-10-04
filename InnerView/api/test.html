@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head><title>API测试</title></head>
+<body>
+    <button onclick="test()">测试API</button>
+    <div id="result"></div>
+    <script>
+        async function test() {
+            try {
+                const res = await fetch('/api/analyze', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({text: '测试文字'.repeat(50)})
+                });
+                const data = await res.json();
+                document.getElementById('result').innerHTML = 
+                    res.ok ? '✅ API工作正常' : `❌ 错误: ${data.error}`;
+            } catch(e) {
+                document.getElementById('result').innerHTML = `💥 ${e.message}`;
+            }
+        }
+    </script>
+</body>
+</html>

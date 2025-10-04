@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>分享你的内心世界</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #FAFBFC 0%, #F8F9FB 25%, #F5F7FA 50%, #F2F5F8 75%, #EFF3F7 100%);
+            color: #1A1F36;
+            line-height: 1.6;
+            position: relative;
+            min-height: 100vh;
+        }
+        
+        /* 背景装饰 */
+        .bg-decoration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+        
+        .decoration-shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.1;
+            animation: gentle-float 50s infinite ease-in-out;
+        }
+        
+        .decoration-shape:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #FF8C42 0%, #FFB366 100%);
+            top: 15%;
+            right: 15%;
+            animation-delay: 0s;
+        }
+        
+        .decoration-shape:nth-child(2) {
+            width: 250px;
+            height: 250px;
+            background: linear-gradient(135deg, #9BADBA 0%, #B8CDD9 100%);
+            bottom: 20%;
+            left: 10%;
+            animation-delay: 25s;
+        }
+        
+        @keyframes gentle-float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(50px, -50px) rotate(180deg); }
+        }
+        
+        /* 顶部导航 */
+        .header {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid #E8EDF5;
+            z-index: 100;
+            padding: 20px 0;
+        }
+        
+        .nav {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FF8C42 0%, #FF7A00 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+        
+        .back-btn {
+            color: #6B7C93;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            color: #1A1F36;
+        }
+        
+        /* 主容器 */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 页面标题 */
+        .page-header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        
+        .page-header h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #1A1F36;
+            letter-spacing: -0.5px;
+        }
+        
+        .page-header .subtitle {
+            font-size: 18px;
+            color: #6B7C93;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+        
+        /* 引导卡片 */
+        .guidance-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 32px;
+            border: 1px solid #E8EDF5;
+            box-shadow: 0 8px 32px rgba(26, 31, 54, 0.08);
+        }
+        
+        .guidance-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #1A1F36;
+            display: flex;
+            align-items: center;
+        }
+        
+        .guidance-title::before {
+            content: '💡';
+            margin-right: 12px;
+            font-size: 24px;
+        }
+        
+        .guidance-list {
+            list-style: none;
+            margin-bottom: 24px;
+        }
+        
+        .guidance-list li {
+            margin-bottom: 16px;
+            color: #4A5568;
+            position: relative;
+            padding-left: 24px;
+            line-height: 1.6;
+        }
+        
+        .guidance-list li::before {
+            content: '•';
+            color: #FF8C42;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            font-size: 18px;
+        }
+        
+        /* 示例引用 */
+        .example-quote {
+            background: linear-gradient(135deg, rgba(155, 173, 186, 0.08), rgba(184, 205, 217, 0.04));
+            border-left: 4px solid #9BADBA;
+            padding: 20px;
+            border-radius: 8px;
+            font-style: italic;
+            color: #4A5568;
+            position: relative;
+            margin: 24px 0;
+        }
+        
+        .example-quote::before {
+            content: '例如：';
+            font-size: 14px;
+            color: #9BADBA;
+            font-weight: 600;
+            font-style: normal;
+            position: absolute;
+            top: -8px;
+            left: 16px;
+            background: white;
+            padding: 0 8px;
+        }
+        
+        /* 输入区域 */
+        .input-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid #E8EDF5;
+            box-shadow: 0 8px 32px rgba(26, 31, 54, 0.08);
+            margin-bottom: 32px;
+        }
+        
+        .input-header {
+            margin-bottom: 32px;
+        }
+        
+        .input-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #1A1F36;
+        }
+        
+        .input-subtitle {
+            color: #6B7C93;
+            font-size: 16px;
+        }
+        
+        .textarea-wrapper {
+            position: relative;
+            margin-bottom: 24px;
+        }
+        
+        .input-textarea {
+            width: 100%;
+            min-height: 320px;
+            padding: 24px;
+            border: 2px solid #E8EDF5;
+            border-radius: 16px;
+            font-size: 16px;
+            line-height: 1.6;
+            font-family: inherit;
+            color: #1A1F36;
+            background: #FAFBFC;
+            resize: vertical;
+            transition: all 0.3s ease;
+        }
+        
+        .input-textarea:focus {
+            outline: none;
+            border-color: #FF8C42;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(255, 140, 66, 0.1);
+        }
+        
+        .input-textarea::placeholder {
+            color: #9BADBA;
+            line-height: 1.8;
+        }
+        
+        /* 字数统计 */
+        .word-count {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            font-size: 14px;
+            color: #6B7C93;
+        }
+        
+        .count-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .count-number {
+            font-weight: 600;
+            color: #FF8C42;
+        }
+        
+        .count-status {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .count-status.insufficient {
+            background: rgba(155, 173, 186, 0.1);
+            color: #6B7C93;
+        }
+        
+        .count-status.good {
+            background: rgba(255, 140, 66, 0.1);
+            color: #FF8C42;
+        }
+        
+        .count-status.excellent {
+            background: rgba(46, 204, 113, 0.1);
+            color: #2ECC71;
+        }
+        
+        /* 提交按钮 */
+        .submit-section {
+            text-align: center;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #FF8C42 0%, #FF7A00 100%);
+            color: white;
+            padding: 18px 48px;
+            border-radius: 16px;
+            border: none;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(255, 140, 66, 0.25);
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .submit-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(255, 140, 66, 0.35);
+            background: linear-gradient(135deg, #FF7A00 0%, #FF6B00 100%);
+        }
+        
+        .submit-btn:disabled {
+            background: #E8EDF5;
+            color: #6B7C93;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+        
+        .loading {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+            display: none;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* 隐私保证 */
+        .privacy-notice {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            border: 1px solid #E8EDF5;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .privacy-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #1A1F36;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .privacy-title::before {
+            content: '🔒';
+            margin-right: 8px;
+            font-size: 20px;
+        }
+        
+        .privacy-content {
+            color: #6B7C93;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* 错误消息 */
+        .error-message {
+            background: #FEF2F2;
+            border: 1px solid #FECACA;
+            color: #B91C1C;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+            display: none;
+        }
+        
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 15px;
+            }
+            
+            .page-header h1 {
+                font-size: 32px;
+            }
+            
+            .guidance-card,
+            .input-section {
+                padding: 24px;
+            }
+            
+            .input-textarea {
+                min-height: 280px;
+                padding: 20px;
+            }
+            
+            .submit-btn {
+                width: 100%;
+                padding: 16px 32px;
+            }
+        }
+        
+        /* 动画 */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- 背景装饰 -->
+    <div class="bg-decoration">
+        <div class="decoration-shape"></div>
+        <div class="decoration-shape"></div>
+    </div>
+
+    <!-- 顶部导航 -->
+    <header class="header">
+        <nav class="nav">
+            <a href="index.html" class="logo">InnerView</a>
+            <a href="index.html" class="back-btn">← 返回首页</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <!-- 页面标题 -->
+        <section class="page-header fade-in">
+            <h1>分享你最真实的感受</h1>
+            <p class="subtitle">
+                所有数据仅用于本次分析，不进行数据储存。
+            </p>
+        </section>
+
+        <!-- 引导说明 -->
+        <div class="guidance-card fade-in">
+            <h3 class="guidance-title">什么样的文字最有效？</h3>
+            <ul class="guidance-list">
+                <li>最近让你感到困扰、迷茫或有深刻感触的事件</li>
+                <li>你对某个人、某段关系的真实感受和思考</li>
+                <li>内心的矛盾、纠结，或者难以向他人表达的想法</li>
+                <li>对生活、工作、未来的真实感受和担忧</li>
+                <li>任何让你有强烈情感波动的个人经历</li>
+            </ul>
+            
+            <div class="example-quote">
+                "最近总是在深夜想起那些未完成的对话，想知道如果当时勇敢一点会不会不一样。我好像总是在安全和冒险之间摆摆，既渴望深度的连接又害怕过度的暴露..."
+            </div>
+        </div>
+
+        <!-- 输入区域 -->
+        <div class="input-section fade-in">
+            <div class="input-header">
+                <h2 class="input-title">✍️写下你的内心感受</h2>
+                <p class="input-subtitle">建议500-800字，获得最佳分析效果</p>
+            </div>
+
+            <div class="textarea-wrapper">
+                <textarea 
+                    class="input-textarea" 
+                    placeholder="在这里写下你最近的真实感受、内心困扰或深刻思考...&#10;&#10;比如：&#10;• 最近的一次情感体验&#10;• 让你印象深刻的人际互动&#10;• 对自己或生活的思考&#10;• 内心的矛盾和纠结&#10;&#10;请尽可能真实、具体地表达，不需要担心语言是否完美，真实的感受最珍贵。"
+                    id="userInput"
+                    oninput="updateWordCount()"></textarea>
+            </div>
+
+            <div class="word-count">
+                <div class="count-info">
+                    <span>已输入：<span class="count-number" id="wordCount">0</span> 字</span>
+                    <span class="count-status insufficient" id="countStatus">需要更多内容</span>
+                </div>
+                <span class="help-text">为保证效果，最少需要200字。</span>
+            </div>
+
+            <div class="error-message" id="errorMessage"></div>
+
+            <div class="submit-section">
+                <button class="submit-btn" id="submitBtn" disabled onclick="startAnalysis()">
+                    <span id="btnText">开始深度分析</span>
+                    <div class="loading" id="btnLoading"></div>
+                </button>
+            </div>
+        </div>
+
+        <!-- 隐私保证 -->
+        <div class="privacy-notice fade-in">
+            <h4 class="privacy-title">隐私保护承诺</h4>
+            <p class="privacy-content">
+                你的文字内容仅用于AI分析，不会被保存或用于其他用途。我们采用端到端加密，确保你的隐私绝对安全。分析完成后，原始文本将被自动删除。
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function updateWordCount() {
+            const textarea = document.getElementById('userInput');
+            const wordCountElement = document.getElementById('wordCount');
+            const countStatus = document.getElementById('countStatus');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            const text = textarea.value;
+            const wordCount = text.length;
+            
+            wordCountElement.textContent = wordCount;
+            
+            // 更新状态
+            if (wordCount < 200) {
+                countStatus.textContent = '需要更多内容';
+                countStatus.className = 'count-status insufficient';
+                submitBtn.disabled = true;
+            } else if (wordCount < 500) {
+                countStatus.textContent = '内容充足';
+                countStatus.className = 'count-status good';
+                submitBtn.disabled = false;
+            } else {
+                countStatus.textContent = '内容丰富，分析效果最佳';
+                countStatus.className = 'count-status excellent';
+                submitBtn.disabled = false;
+            }
+        }
+        
+        // 客户端本地 mock 结果（当后端不可用或未配置 API key 时使用）
+        function generateMockResultClient(text) {
+            const excerpt = text.slice(0, 120) + (text.length > 120 ? '...' : '');
+            return {
+                portrait: {
+                    theme: `你是一个内省而敏感的人（来自示例：${excerpt}）`,
+                    sections: {
+                        feeling: '你以细腻的情感接收世界，容易被细节触动。',
+                        strategy: '你倾向于用有意识的距离来保护自己，同时保持深度的关怀。',
+                        contradiction: '既渴望被理解，又害怕过度暴露。'
+                    }
+                },
+                growth: {
+                    theme: '成长的可能在于学会选择性地使用你的敏感',
+                    sections: {
+                        pattern: '预设复杂性导致疲惫',
+                        assumption: '理解并非总等于安全',
+                        adjustment: '在需要时关闭全频接收，给自己留白'
+                    }
+                },
+                partner: {
+                    theme: '理想伴侣应能给你空间同时在关键时刻提供锚定',
+                    sections: {
+                        traits: '稳定的情感锚定力',
+                        understanding: '接受你的独处需求',
+                        dynamic: '并肩而立的相处方式'
+                    }
+                },
+                lifeline: {
+                    theme: '对真实性的永恒追求',
+                    sections: {
+                        drive: '对意义的渴求驱动你的选择',
+                        explanation: '复杂性反映了你对深度的追求',
+                        strategy: '为理解而活，但不过分迎合他人'
+                    }
+                }
+            };
+        }
+        
+        async function startAnalysis() {
+            const text = document.getElementById('userInput').value;
+            const submitBtn = document.getElementById('submitBtn');
+            const btnText = document.getElementById('btnText');
+            const btnLoading = document.getElementById('btnLoading');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // 隐藏错误消息
+            errorMessage.style.display = 'none';
+            
+            if (text.length < 200) {
+                showError('请输入至少200字的内容');
+                return;
+            }
+            
+            // 显示加载状态
+            submitBtn.disabled = true;
+            btnText.textContent = '正在分析中...';
+            btnLoading.style.display = 'block';
+            
+            try {
+                // 调用分析API
+                const response = await fetch('/api/analyze', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ text: text })
+                });
+
+                // 处理非 2xx 返回，优先尝试读取返回的 JSON 错误信息以便更好地提示用户和调试
+                let result;
+                if (!response.ok) {
+                    try {
+                        const errBody = await response.json();
+                        const serverMessage = errBody.error || errBody.message || JSON.stringify(errBody);
+                        throw new Error(`服务器返回错误：${serverMessage}（status ${response.status}）`);
+                    } catch (parseError) {
+                        // 不是 JSON 或解析失败，抛出通用错误
+                        throw new Error(`网络或服务错误，HTTP 状态码：${response.status}`);
+                    }
+                }
+
+                result = await response.json();
+
+                if (result.success) {
+                    // 保存分析结果到localStorage
+                    localStorage.setItem('analysisResult', JSON.stringify(result.data));
+                    localStorage.setItem('userText', text);
+                    
+                    // 跳转到结果页面
+                    window.location.href = 'results.html';
+                } else {
+                    throw new Error(result.error || '分析失败');
+                }
+                
+            } catch (error) {
+                console.error('分析失败:', error);
+                // 优先显示后端返回的详细错误信息，便于调试；如果没有，回退到通用提示
+                const msg = error && error.message ? error.message : '分析服务暂时不可用，请检查网络连接后重试';
+                showError(msg);
+                // 将后端错误信息保存，以便在结果页展示调试信息
+                try {
+                    localStorage.setItem('lastAnalysisError', JSON.stringify({ message: msg, stack: error && error.stack ? error.stack : null, timestamp: new Date().toISOString() }));
+                } catch (e) {
+                    console.warn('无法保存 lastAnalysisError 到 localStorage', e);
+                }
+
+                // 使用客户端 mock 结果作为回退（保证用户能看到结果页面）
+                try {
+                    const mock = generateMockResultClient(text);
+                    localStorage.setItem('analysisResult', JSON.stringify(mock));
+                    localStorage.setItem('userText', text);
+                    // 略微延迟以便用户看到错误信息，然后跳转
+                    setTimeout(() => {
+                        window.location.href = 'results.html';
+                    }, 800);
+                    return;
+                } catch (mockErr) {
+                    console.error('生成本地 mock 结果失败:', mockErr);
+                }
+
+                // 恢复按钮状态
+                submitBtn.disabled = false;
+                btnText.textContent = '开始深度分析';
+                btnLoading.style.display = 'none';
+            }
+        }
+        
+        function showError(message) {
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+        }
+        
+        // 滚动动画
+        function handleScrollAnimation() {
+            const elements = document.querySelectorAll('.fade-in');
+            elements.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight - 100) {
+                    el.classList.add('visible');
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', handleScrollAnimation);
+        document.addEventListener('DOMContentLoaded', handleScrollAnimation);
+        
+        // 检测是否为开发环境
+        const isDevelopment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        
+        // 自动保存输入内容（防止意外丢失）- 开发模式下禁用
+        if (!isDevelopment) {
+            setInterval(() => {
+                const text = document.getElementById('userInput').value;
+                if (text.length > 50) {
+                    localStorage.setItem('heartMirrorDraft', text);
+                }
+            }, 5000);
+        }
+        
+        // 页面加载时恢复草稿 - 开发模式下禁用
+        if (!isDevelopment) {
+            document.addEventListener('DOMContentLoaded', () => {
+                const draft = localStorage.getItem('heartMirrorDraft');
+                if (draft) {
+                    document.getElementById('userInput').value = draft;
+                    updateWordCount();
+                }
+            });
+        }
+    </script>
+</body>
+</html>

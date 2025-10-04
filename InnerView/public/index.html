@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InnerView</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 首页特殊样式 */
+        .header {
+            padding: 40px 0;
+            text-align: center;
+        }
+        
+        .logo-main {
+            font-size: 36px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FF8C42 0%, #FF7A00 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+        
+        .tagline {
+            font-size: 16px;
+            color: #6B7C93;
+            font-weight: 500;
+        }
+        
+        .hero-section {
+            text-align: center;
+            padding: 80px 0;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero-title {
+            font-size: 56px;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            color: #1A1F36;
+            letter-spacing: -1px;
+        }
+        
+        .hero-subtitle {
+            font-size: 22px;
+            color: #6B7C93;
+            margin-bottom: 48px;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+        
+        .hero-description {
+            font-size: 18px;
+            color: #4A5568;
+            margin-bottom: 64px;
+            line-height: 1.7;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #FF8C42 0%, #FF7A00 100%);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 16px;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 8px 32px rgba(255, 140, 66, 0.25);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(255, 140, 66, 0.35);
+            background: linear-gradient(135deg, #FF7A00 0%, #FF6B00 100%);
+        }
+        
+        .trust-signals {
+            margin-top: 80px;
+            text-align: center;
+        }
+        
+        .trust-title {
+            font-size: 16px;
+            color: #6B7C93;
+            margin-bottom: 32px;
+            font-weight: 500;
+        }
+        
+        .trust-stats {
+            display: flex;
+            justify-content: center;
+            gap: 80px;
+            flex-wrap: wrap;
+        }
+        
+        .trust-stat {
+            text-align: center;
+        }
+        
+        .trust-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: #FF8C42;
+            margin-bottom: 8px;
+        }
+        
+        .trust-label {
+            font-size: 14px;
+            color: #6B7C93;
+            font-weight: 500;
+        }
+        
+        .features-section {
+            padding: 120px 0;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 32px;
+            margin: 80px 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .features-title {
+            text-align: center;
+            font-size: 40px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #1A1F36;
+        }
+        
+        .features-subtitle {
+            text-align: center;
+            font-size: 18px;
+            color: #6B7C93;
+            margin-bottom: 80px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 48px;
+        }
+        
+        .feature-card {
+            text-align: center;
+            padding: 40px 24px;
+        }
+        
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            background: linear-gradient(135deg, rgba(255, 140, 66, 0.1), rgba(255, 179, 102, 0.05));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .icon-mirror::before {
+            content: '';
+            width: 32px;
+            height: 32px;
+            border: 3px solid #FF8C42;
+            border-radius: 50%;
+            position: relative;
+        }
+        
+        .icon-insight::before {
+            content: '';
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #FF8C42, #FFB366);
+            clip-path: polygon(50% 0%, 80% 35%, 60% 35%, 60% 100%, 40% 100%, 40% 35%, 20% 35%);
+        }
+        
+        .icon-heart::before {
+            content: '';
+            width: 24px;
+            height: 22px;
+            background: #FF8C42;
+            clip-path: path('M12,21.35l-1.45-1.32C5.4,15.36,2,12.28,2,8.5 C2,5.42,4.42,3,7.5,3c1.74,0,3.41,0.81,4.5,2.09C13.09,3.81,14.76,3,16.5,3 C19.58,3,22,5.42,22,8.5c0,3.78-3.4,6.86-8.55,11.54L12,21.35z');
+        }
+        
+        .icon-guide::before {
+            content: '';
+            width: 32px;
+            height: 32px;
+            border: 3px solid #FF8C42;
+            border-radius: 50%;
+            position: relative;
+        }
+        
+        .icon-guide::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 10px solid #FF8C42;
+        }
+        
+        .feature-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #1A1F36;
+        }
+        
+        .feature-description {
+            font-size: 16px;
+            color: #4A5568;
+            line-height: 1.6;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 40px;
+            }
+            
+            .hero-subtitle {
+                font-size: 18px;
+            }
+            
+            .trust-stats {
+                gap: 40px;
+            }
+            
+            .features-section {
+                padding: 60px 20px;
+                margin: 40px -20px;
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 背景装饰 -->
+    <div class="bg-decoration">
+        <div class="decoration-shape"></div>
+        <div class="decoration-shape"></div>
+    </div>
+
+    <div class="container">
+        <!-- 头部 -->
+        <header class="header">
+            <div class="logo-main">文字是思维的映射</div>
+            <div class="tagline"></div>
+        </header>
+
+        <!-- 主要内容 -->
+        <section class="hero-section">
+            <h1 class="hero-title fade-in">
+                InnerView
+            </h1>
+            
+            <p class="hero-subtitle fade-in">
+                语言是我们与世界对话的方式，也是我们认知自我的工具。
+            </p>
+            
+            <p class="hero-description fade-in">
+                输入你的文字，AI将帮助你识别那些深藏的思维模式、内心的成长可能、理想的伴侣画像，以及你人生的核心线索。揭开你未曾察觉的自我。
+            </p>
+            
+            <a href="input.html" class="cta-button fade-in">
+                找到被日常遮蔽的自己
+            </a>
+        </section>
+
+        <!-- 信任信号 -->
+        <section class="trust-signals fade-in">
+            <h3 class="trust-title">已经帮助众多人重新认识自己</h3>
+            <div class="trust-stats">
+                <div class="trust-stat">
+                    <div class="trust-number">15,000+</div>
+                    <div class="trust-label">深度分析报告</div>
+                </div>
+                <div class="trust-stat">
+                    <div class="trust-number">94%</div>
+                    <div class="trust-label">用户认为准确</div>
+                </div>
+                <div class="trust-stat">
+                    <div class="trust-number">4.8</div>
+                    <div class="trust-label">平均满意度评分</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 特性展示 -->
+        <section class="features-section fade-in">
+            <h2 class="features-title">四个维度，完整画像</h2>
+            <p class="features-subtitle">不是简单的性格测试，而是对你内在世界的深度洞察</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon icon-mirror"></div>
+                    <h3 class="feature-title">真实的你</h3>
+                    <p class="feature-description">发现你的核心认知结构、处理信息的方式、以及你独特的思考风格，了解你如何看待世界。</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon icon-insight"></div>
+                    <h3 class="feature-title">成长的可能</h3>
+                    <p class="feature-description">识别可能阻碍你发展、重复让你陷入困境的思维陷阱或模式。提前预警，让你能主动打破限制，实现真正的个人突破和成长。</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon icon-heart"></div>
+                    <h3 class="feature-title">理想的另一半</h3>
+                    <p class="feature-description">从你的内在需求和情感表达中，描绘出与你深层契合的理想伴侣类型。帮助你更清晰地知道，谁才是能与你灵魂共振的那个人。</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon icon-guide"></div>
+                    <h3 class="feature-title">人生线索</h3>
+                    <p class="feature-description">提炼出你文字中反复出现的主题、渴望和潜藏的生命核心线索。洞察你的人生真正追求，找到你的核心线索。</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // 滚动动画
+        function handleScrollAnimation() {
+            const elements = document.querySelectorAll('.fade-in');
+            elements.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight - 100) {
+                    el.classList.add('visible');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', handleScrollAnimation);
+        document.addEventListener('DOMContentLoaded', handleScrollAnimation);
+
+        async function analyzeInput() {
+          const input = document.getElementById('userInput').value;
+          console.log('Sending input to backend:', input); // 前端日志
+
+          try {
+            const response = await fetch('/api/analyze', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ text: input })
+            });
+
+            const result = await response.json();
+            console.log('Received response from backend:', result); // 前端日志
+
+            if (result.success) {
+              document.getElementById('output').innerText = JSON.stringify(result.data, null, 2);
+            } else {
+              console.error('Backend error:', result.message);
+            }
+          } catch (error) {
+            console.error('Network error:', error);
+          }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>你的内在世界全息图</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #FAFBFC 0%, #F8F9FB 25%, #F5F7FA 50%, #F2F5F8 75%, #EFF3F7 100%);
+            color: #1A1F36;
+            line-height: 1.6;
+            position: relative;
+            min-height: 100vh;
+        }
+        
+        /* 背景装饰 */
+        .bg-decoration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+        
+        .decoration-shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.2;
+            animation: gentle-float 40s infinite ease-in-out;
+        }
+        
+        .decoration-shape:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #FF8C42 0%, #FFB366 100%);
+            top: 5%;
+            right: 5%;
+            animation-delay: 0s;
+        }
+        
+        .decoration-shape:nth-child(2) {
+            width: 250px;
+            height: 250px;
+            background: linear-gradient(135deg, #9BADBA 0%, #B8CDD9 100%);
+            bottom: 10%;
+            left: 10%;
+            animation-delay: 20s;
+        }
+        
+        @keyframes gentle-float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(40px, -40px) rotate(180deg); }
+        }
+        
+        /* 顶部导航 */
+        .header {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            -webkit-backdrop-filter: blur(20px); /* Safari */
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid #E8EDF5;
+            z-index: 100;
+        }
+        
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FF8C42 0%, #FF7A00 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+        
+        .nav-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .nav-btn {
+            background: white;
+            border: 2px solid #E8EDF5;
+            color: #6B7C93;
+            padding: 10px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn:hover {
+            border-color: #9BADBA;
+            color: #1A1F36;
+        }
+        
+        .nav-btn.primary {
+            background: linear-gradient(135deg, #FF8C42 0%, #FF7A00 100%);
+            color: white;
+            border: none;
+        }
+        
+        .nav-btn.primary:hover {
+            background: linear-gradient(135deg, #FF7A00 0%, #FF6B00 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(255, 140, 66, 0.25);
+        }
+        
+        /* 主容器 */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 页面标题 */
+        .page-header {
+            text-align: center;
+            padding: 80px 0 100px;
+        }
+        
+        .completion-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #9BADBA 0%, #B8CDD9 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+        
+        .page-header h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #1A1F36;
+            letter-spacing: -1px;
+        }
+        
+        .page-header .subtitle {
+            font-size: 18px;
+            color: #6B7C93;
+            margin-bottom: 32px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* 分析结果卡片 */
+        .results-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 80px;
+            margin-bottom: 100px;
+        }
+        
+        .result-card {
+            background: white;
+            border-radius: 24px;
+            padding: 48px;
+            border: 1px solid #E8EDF5;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(26, 31, 54, 0.08);
+        }
+        
+        .result-card:hover {
+            border-color: rgba(255, 140, 66, 0.2);
+            box-shadow: 0 12px 48px rgba(26, 31, 54, 0.12);
+        }
+        
+        .result-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #FF8C42, #FFB366);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #F2F5F8;
+        }
+        
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            margin-right: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(255, 140, 66, 0.1), rgba(255, 179, 102, 0.05));
+            border-radius: 16px;
+            border: 1px solid rgba(255, 140, 66, 0.1);
+            position: relative;
+        }
+        
+        /* 卡片图标设计 */
+        .icon-portrait::before {
+            content: '';
+            width: 24px;
+            height: 24px;
+            border: 3px solid #FF8C42;
+            border-radius: 50%;
+            position: relative;
+        }
+        
+        .icon-portrait::after {
+            content: '';
+            position: absolute;
+            top: 38px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 32px;
+            height: 16px;
+            border: 3px solid #FF8C42;
+            border-radius: 16px 16px 0 0;
+        }
+        
+        .icon-growth::before {
+            content: '';
+            width: 20px;
+            height: 28px;
+            background: linear-gradient(180deg, #FF8C42 0%, #FFB366 100%);
+            clip-path: polygon(50% 0%, 80% 35%, 60% 35%, 60% 100%, 40% 100%, 40% 35%, 20% 35%);
+        }
+        
+        .icon-partner::before {
+            content: '';
+            position: absolute;
+            left: 12px;
+            top: 18px;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #FF8C42;
+            border-radius: 50%;
+        }
+        
+        .icon-partner::after {
+            content: '';
+            position: absolute;
+            right: 12px;
+            top: 18px;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #FFB366;
+            border-radius: 50%;
+        }
+        
+        .icon-compass::before {
+            content: '';
+            width: 28px;
+            height: 28px;
+            border: 3px solid #FF8C42;
+            border-radius: 50%;
+            position: relative;
+        }
+        
+        .icon-compass::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-bottom: 8px solid #FF8C42;
+        }
+        
+        .card-title {
+            flex: 1;
+        }
+        
+        .card-title h2 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1A1F36;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+        
+        .card-title .subtitle {
+            font-size: 16px;
+            color: #6B7C93;
+        }
+        
+        .card-content {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #1A1F36;
+        }
+        
+        .card-content h3 {
+            font-size: 20px;
+            color: #FF8C42;
+            margin-bottom: 16px;
+            margin-top: 32px;
+            font-weight: 600;
+        }
+        
+        .card-content h3:first-child {
+            margin-top: 0;
+        }
+        
+        .card-content p {
+            margin-bottom: 24px;
+            color: #4A5568;
+        }
+        
+        .card-content p:last-child {
+            margin-bottom: 0;
+        }
+        
+        /* 特殊样式 */
+        .highlight {
+            background: linear-gradient(135deg, rgba(255, 140, 66, 0.15), rgba(255, 179, 102, 0.1));
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+            color: #1A1F36;
+        }
+        
+        .insight-quote {
+            background: linear-gradient(135deg, rgba(155, 173, 186, 0.1), rgba(184, 205, 217, 0.05));
+            border-left: 4px solid #9BADBA;
+            padding: 24px;
+            margin: 32px 0;
+            border-radius: 8px;
+            font-style: italic;
+            position: relative;
+            color: #4A5568;
+        }
+        
+        .insight-quote::before {
+            content: '"';
+            font-size: 48px;
+            color: #9BADBA;
+            position: absolute;
+            top: -8px;
+            left: 20px;
+            opacity: 0.4;
+            font-family: serif;
+        }
+        
+        /* 底部操作区域 */
+        .bottom-actions {
+            background: white;
+            border-radius: 24px;
+            padding: 48px;
+            text-align: center;
+            margin-bottom: 80px;
+            border: 1px solid #E8EDF5;
+            box-shadow: 0 8px 32px rgba(26, 31, 54, 0.08);
+        }
+        
+        .bottom-actions h3 {
+            font-size: 28px;
+            margin-bottom: 16px;
+            color: #1A1F36;
+            font-weight: 700;
+        }
+        
+        .bottom-actions p {
+            margin-bottom: 32px;
+            color: #6B7C93;
+            font-size: 16px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            background: linear-gradient(135deg, #FF8C42 0%, #FF7A00 100%);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 140, 66, 0.25);
+            background: linear-gradient(135deg, #FF7A00 0%, #FF6B00 100%);
+        }
+        
+        .action-btn.secondary {
+            background: white;
+            color: #6B7C93;
+            border: 2px solid #E8EDF5;
+        }
+        
+        .action-btn.secondary:hover {
+            background: #F8F9FB;
+            border-color: #9BADBA;
+            color: #1A1F36;
+        }
+        
+        /* 侧边目录 */
+        .toc {
+            position: fixed;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 90;
+            opacity: 0.7;
+        }
+        
+        .toc-item {
+            display: block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #E8EDF5;
+            margin-bottom: 16px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .toc-item.active {
+            background: #FF8C42;
+            transform: scale(1.3);
+        }
+        
+        .toc-item::after {
+            content: attr(data-title);
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #1A1F36;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .toc-item:hover::after {
+            opacity: 1;
+        }
+
+        /* 错误状态 */
+        .error-state {
+            text-align: center;
+            padding: 80px 20px;
+        }
+        
+        .error-state h2 {
+            font-size: 32px;
+            color: #1A1F36;
+            margin-bottom: 16px;
+        }
+        
+        .error-state p {
+            color: #6B7C93;
+            margin-bottom: 32px;
+            font-size: 18px;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 1200px) {
+            .toc { display: none; }
+        }
+        
+        @media (max-width: 768px) {
+            .container { padding: 0 15px; }
+            .result-card { padding: 32px 24px; }
+            .page-header h1 { font-size: 36px; }
+            .card-title h2 { font-size: 24px; }
+            .nav { flex-direction: column; gap: 20px; }
+            .nav-actions { flex-wrap: wrap; justify-content: center; }
+            .action-buttons { flex-direction: column; align-items: center; }
+            .bottom-actions { padding: 32px 24px; }
+            .decoration-shape { opacity: 0.1; }
+        }
+        
+        /* 滚动动画 */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- 背景装饰 -->
+    <div class="bg-decoration">
+        <div class="decoration-shape"></div>
+        <div class="decoration-shape"></div>
+    </div>
+
+    <!-- 顶部导航 -->
+    <header class="header">
+        <nav class="nav">
+            <a href="index.html" class="logo">Innerview</a>
+            <div class="nav-actions">
+                <a href="#" class="nav-btn" onclick="saveReport()">保存报告</a>
+                <a href="#" class="nav-btn" onclick="shareReport()">分享给朋友</a>
+                <a href="input.html" class="nav-btn primary">重新分析</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- 侧边目录 -->
+    <nav class="toc" id="tableOfContents" style="display: none;">
+        <div class="toc-item active" data-title="真实的你" onclick="scrollToSection('portrait')"></div>
+        <div class="toc-item" data-title="成长的可能" onclick="scrollToSection('growth')"></div>
+        <div class="toc-item" data-title="理想的另一半" onclick="scrollToSection('partner')"></div>
+        <div class="toc-item" data-title="人生线索" onclick="scrollToSection('lifeline')"></div>
+    </nav>
+
+    <div class="container" id="mainContent">
+        <!-- 动态内容将在这里渲染 -->
+    </div>
+
+    <script>
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAnalysisResults();
+        });
+
+        function loadAnalysisResults() {
+            const analysisData = localStorage.getItem('analysisResult');
+            
+            if (!analysisData) {
+                showErrorState();
+                return;
+            }
+            
+            try {
+                const data = JSON.parse(analysisData);
+                renderResults(data);
+                document.getElementById('tableOfContents').style.display = 'block';
+                handleScrollAnimation();
+            } catch (error) {
+                console.error('解析分析结果失败:', error);
+                showErrorState();
+            }
+        }
+
+        function showErrorState() {
+            const mainContent = document.getElementById('mainContent');
+            mainContent.innerHTML = `
+                <div class="error-state">
+                    <h2>暂无分析结果</h2>
+                    <p>请先完成心理分析，或者重新进行分析</p>
+                    <a href="input.html" class="action-btn">开始分析</a>
+                </div>
+            `;
+        }
+
+        function renderResults(data) {
+            const mainContent = document.getElementById('mainContent');
+            
+            const html = `
+                <!-- 页面标题 -->
+                <section class="page-header">
+                    <div class="completion-badge">分析完成</div>
+                    <h1>你的内在世界全息图</h1>
+                    <p class="subtitle">基于你提供的文字，AI为你构建了完整的心理画像</p>
+                </section>
+
+                <!-- 分析结果 -->
+                <section class="results-grid">
+                    <!-- 人格画像 -->
+                    <div class="result-card fade-in" id="portrait">
+                        <div class="card-header">
+                            <div class="card-icon icon-portrait"></div>
+                            <div class="card-title">
+                                <h2>真实的你</h2>
+                                <p class="subtitle">深度人格画像解析</p>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="insight-quote">
+                                ${data.portrait.theme}
+                            </div>
+                            
+                            <h3>感受世界的方式</h3>
+                            <p>${highlightKeyTerms(data.portrait.sections.feeling)}</p>
+                            
+                            <h3>生存策略</h3>
+                            <p>${highlightKeyTerms(data.portrait.sections.strategy)}</p>
+                            
+                            <h3>根本矛盾</h3>
+                            <p>${highlightKeyTerms(data.portrait.sections.contradiction)}</p>
+                        </div>
+                    </div>
+
+                    <!-- 成长的可能 -->
+                    <div class="result-card fade-in" id="growth">
+                        <div class="card-header">
+                            <div class="card-icon icon-growth"></div>
+                            <div class="card-title">
+                                <h2>成长的可能</h2>
+                                <p class="subtitle">思维模式优化指南</p>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="insight-quote">
+                                ${data.growth.theme}
+                            </div>
+                            
+                            <h3>核心思维模式</h3>
+                            <p>${highlightKeyTerms(data.growth.sections.pattern)}</p>
+                            
+                            <h3>需要重新思考的认知</h3>
+                            <p>${highlightKeyTerms(data.growth.sections.assumption)}</p>
+                            
+                            <h3>温和的调整方向</h3>
+                            <p>${highlightKeyTerms(data.growth.sections.adjustment)}</p>
+                        </div>
+                    </div>
+
+                    <!-- 理想伴侣画像 -->
+                    <div class="result-card fade-in" id="partner">
+                        <div class="card-header">
+                            <div class="card-icon icon-partner"></div>
+                            <div class="card-title">
+                                <h2>理想的另一半</h2>
+                                <p class="subtitle">与你互补的灵魂画像</p>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="insight-quote">
+                                ${data.partner.theme}
+                            </div>
+                            
+                            <h3>核心特质</h3>
+                            <p>${highlightKeyTerms(data.partner.sections.traits)}</p>
+                            
+                            <h3>需要理解的方面</h3>
+                            <p>${highlightKeyTerms(data.partner.sections.understanding)}</p>
+                            
+                            <h3>理想的相处模式</h3>
+                            <p>${highlightKeyTerms(data.partner.sections.dynamic)}</p>
+                        </div>
+                    </div>
+
+                    <!-- 人生线索 -->
+                    <div class="result-card fade-in" id="lifeline">
+                        <div class="card-header">
+                            <div class="card-icon icon-compass"></div>
+                            <div class="card-title">
+                                <h2>人生线索</h2>
+                                <p class="subtitle">贯穿你存在的核心驱动力</p>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="insight-quote">
+                                ${data.lifeline.theme}
+                            </div>
+                            
+                            <h3>根本驱动力</h3>
+                            <p>${highlightKeyTerms(data.lifeline.sections.drive)}</p>
+                            
+                            <h3>行为模式的解释</h3>
+                            <p>${highlightKeyTerms(data.lifeline.sections.explanation)}</p>
+                            
+                            <h3>人生策略</h3>
+                            <p>${highlightKeyTerms(data.lifeline.sections.strategy)}</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 底部操作区域 -->
+                <section class="bottom-actions">
+                    <h3>保存你的洞察报告</h3>
+                    <p>这份报告是专属于你的心理画像，建议保存下来在人生的不同阶段重新阅读。</p>
+                    <div class="action-buttons">
+                        <button class="action-btn" onclick="downloadPDF()">下载PDF报告</button>
+                        <button class="action-btn secondary" onclick="shareReport()">分享给信任的朋友</button>
+                        <a href="input.html" class="action-btn secondary">重新进行分析</a>
+                    </div>
+                </section>
+
+                <!-- 调试面板（仅在 localStorage 存在错误时显示） -->
+                <section class="result-card" id="debugPanel" style="display:none;">
+                    <div class="card-header">
+                        <div class="card-icon icon-portrait"></div>
+                        <div class="card-title">
+                            <h2>调试信息</h2>
+                            <p class="subtitle">如果分析过程中出现错误，这里会显示后端返回的详细信息（本地保存）</p>
+                        </div>
+                    </div>
+                    <div class="card-content" id="debugContent">
+                        <!-- JS 会注入内容 -->
+                    </div>
+                </section>
+            `;
+
+            mainContent.innerHTML = html;
+        }
+
+        function highlightKeyTerms(text) {
+            if (!text) return '分析内容生成中...';
+            
+            // 智能高亮关键概念
+            const patterns = [
+                /(".*?")/g, // 引号中的内容
+                /(你是一个[^，。！？]*)/g, // "你是一个..."句式
+                /(你的[^，。！？]*)/g, // "你的..."句式  
+                /(你需要[^，。！？]*)/g, // "你需要..."句式
+                /(你可能[^，。！？]*)/g, // "你可能..."句式
+            ];
+            
+            let result = text;
+            patterns.forEach(pattern => {
+                result = result.replace(pattern, '<span class="highlight">$1</span>');
+            });
+            
+            return result;
+        }
+
+        // 滚动动画
+        function handleScrollAnimation() {
+            const elements = document.querySelectorAll('.fade-in');
+            elements.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight - 100) {
+                    el.classList.add('visible');
+                }
+            });
+        }
+
+        // 目录导航
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // 更新目录状态
+        function updateTocActive() {
+            const sections = ['portrait', 'growth', 'partner', 'lifeline'];
+            const tocItems = document.querySelectorAll('.toc-item');
+            
+            sections.forEach((sectionId, index) => {
+                const element = document.getElementById(sectionId);
+                if (element) {
+                    const rect = element.getBoundingClientRect();
+                    
+                    if (rect.top <= 200 && rect.bottom >= 200) {
+                        tocItems.forEach(item => item.classList.remove('active'));
+                        if (tocItems[index]) {
+                            tocItems[index].classList.add('active');
+                        }
+                    }
+                }
+            });
+        }
+
+        // 功能按钮
+        function saveReport() {
+            const analysisData = localStorage.getItem('analysisResult');
+            if (analysisData) {
+                const blob = new Blob([analysisData], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `心理洞察报告_${new Date().toLocaleDateString()}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+                alert('报告已保存到下载文件夹！');
+            }
+        }
+
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: '我的心理洞察报告 - 语言即世界',
+                    text: '我刚完成了一次深度的内心探索，想和你分享我的发现...',
+                    url: window.location.href
+                });
+            } else {
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    alert('链接已复制到剪贴板，可以分享给朋友了！');
+                });
+            }
+        }
+
+        function downloadPDF() {
+            alert('PDF下载功能将在后续版本中实现，目前可以使用浏览器的"打印"功能保存为PDF');
+        }
+
+        // 事件监听
+        window.addEventListener('scroll', () => {
+            handleScrollAnimation();
+            updateTocActive();
+        });
+
+        // 显示调试信息（如果存在）
+        (function showDebugInfo() {
+            try {
+                const raw = localStorage.getItem('lastAnalysisError');
+                if (!raw) return;
+                const err = JSON.parse(raw);
+                const panel = document.getElementById('debugPanel');
+                const content = document.getElementById('debugContent');
+                if (!panel || !content) return;
+
+                const html = `
+                    <p><strong>时间：</strong>${err.timestamp || '未知'}</p>
+                    <p><strong>消息：</strong> ${err.message || '无'}</p>
+                    <pre style="white-space:pre-wrap;background:#f7f7f7;padding:12px;border-radius:8px;margin-top:12px;">${err.stack || '无堆栈信息'}</pre>
+                `;
+
+                content.innerHTML = html;
+                panel.style.display = 'block';
+            } catch (e) {
+                console.warn('解析 lastAnalysisError 失败', e);
+            }
+        })();
+    </script>
+</body>
+</html>
