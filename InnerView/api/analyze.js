@@ -435,8 +435,8 @@ export default async function(req, res) {
           content: `请分析以下文本：\n\n${text}`
         }
       ],
-      temperature: 0.7,
-      max_tokens: 3000,
+      temperature: 0.5,
+      max_tokens: 7000,
     });
 
     const aiResponse = completion.choices[0].message.content;
